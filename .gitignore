@@ -36,7 +36,7 @@
 **/android/gradlew
 **/android/gradlew.bat
 **/android/local.properties
-**/android/**/GeneratedPluginRegistrant.java
+**/android/**/GeneratedPluginRegistrant.java1
 **/android/google-services.json
 
 # iOS/XCode related

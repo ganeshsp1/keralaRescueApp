@@ -1,5 +1,7 @@
 name: keralarescue
-description: A new Flutter project.
+description: Kerala rescue provides alerts of announcements being made in keralarescue.in 
+author: Ganesh S P <ganesh.sp006@gmail.com>
+homepage: https://github.com/ganeshsp1
 version: 1.0.0+1
 
 environment:
