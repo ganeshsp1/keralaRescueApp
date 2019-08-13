@@ -1,0 +1,32 @@
+name: keralarescue
+description: A new Flutter project.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^0.3.11+2
+  cupertino_icons: ^0.1.2
+  # firebase_database: ^3.0.5
+  firebase_messaging: ^5.1.3
+  url_launcher: ^5.1.2
+
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.7.2+1
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/icon/social-care.png"
+
+flutter:
+  assets:
+    - assets/icon/
+    - assets/images/kerala.PNG
+  uses-material-design: true
