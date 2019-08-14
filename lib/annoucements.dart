@@ -32,7 +32,7 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
                 if (snapshot.hasError) return Text("Error : ${snapshot.error}");
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
-                  /*
+                    /*
                     On ConnectionState loading/waiting shows shimmer animation
                    */
                     return ListView.builder(
@@ -66,7 +66,12 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
                               "Very Important") {
                             _chipColor = Colors.red[500];
                             _textColor = Colors.white;
-                          } else {
+                          } else if (snapshot.data[index].priority.contains(
+                              new RegExp(r'high', caseSensitive: false))) {
+                            _chipColor = Colors.orange;
+                            _textColor = Colors.white;
+                          } else if (snapshot.data[index].priority.contains(
+                              new RegExp(r'medium', caseSensitive: false))) {
                             _chipColor = Colors.amberAccent;
                             _textColor = Colors.black;
                           }
