@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:keralarescue/services/annoucements.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
+import 'package:groovin_widgets/groovin_expansion_tile.dart';
 import 'about.dart';
 // import 'package:translator'
 
@@ -135,23 +136,23 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('About'),
               onTap: () {
                 showGalleryAboutDialog(context);
-        //         showDialog(
-        //   context: context,
-        //   builder: (context) => AlertDialog(
-        //     content: showGalleryAboutDialog(context),
-            
-        //     // ListTile(
-        //     //   title: Text('About'),
-        //     //   subtitle: Text('This app is created by Ganesh S P. \n you can also contribute to it at \n https://github.com/ganeshsp1/keralaRescue'),
-        //     // ),
-        //     actions: <Widget>[
-        //       FlatButton(
-        //         child: Text('Ok'),
-        //         onPressed: () => Navigator.of(context).pop(),
-        //       ),
-        //     ],
-        //   ),
-        // );
+                //         showDialog(
+                //   context: context,
+                //   builder: (context) => AlertDialog(
+                //     content: showGalleryAboutDialog(context),
+
+                //     // ListTile(
+                //     //   title: Text('About'),
+                //     //   subtitle: Text('This app is created by Ganesh S P. \n you can also contribute to it at \n https://github.com/ganeshsp1/keralaRescue'),
+                //     // ),
+                //     actions: <Widget>[
+                //       FlatButton(
+                //         child: Text('Ok'),
+                //         onPressed: () => Navigator.of(context).pop(),
+                //       ),
+                //     ],
+                //   ),
+                // );
               },
             ),
           ],
@@ -160,47 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body:
-          // StreamBuilder(
-          //   stream: _childRef.onValue,
-          //   builder: (context, snap) {
-          //     if (snap.hasData &&
-          //         !snap.hasError &&
-          //         snap.data.snapshot.value != null) {
-          //       DataSnapshot snapshot = snap.data.snapshot;
-          //       List item = [];
-          //       List _list = [];
-          //       _list = snapshot.value;
-          //       _list.forEach((f) {
-          //         if (f != null) {
-          //           item.add(f);
-          //         }
-          //       });
-          //       return snap.data.snapshot.value == null
-          //           ? SizedBox()
-          //           : ListView.builder(
-          //               scrollDirection: Axis.vertical,
-          //               itemCount: item.length,
-          //               itemBuilder: (context, index) {
-          //                 return getList(item[index]);
-
-          //                 // Container(
-          //                 //   padding: EdgeInsets.all(8.0),
-          //                 //   color: getTileColor(item[index]['priority']),
-          //                 //   child: Text(
-          //                 //     item[index]['description'],
-          //                 //     style: TextStyle(),
-          //                 //   ),
-          //                 // );
-          //               },
-          //             );
-          //     } else {
-          //       return Center(child: CircularProgressIndicator());
-          //     }
-          //   },
-          // ),
-
-          WebView(
+      body: WebView(
         initialUrl: 'https://keralarescue.in/',
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (WebViewController webViewController) {
@@ -208,7 +169,8 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AnnoucementsPage())),
         tooltip: 'Increment',
         child: Icon(Icons.notification_important),
       ),
@@ -316,6 +278,82 @@ class _MyHomePageState extends State<MyHomePage> {
               // ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class AnnoucementsPage extends StatefulWidget {
+  @override
+  _AnnoucementsPageState createState() => _AnnoucementsPageState();
+}
+
+class _AnnoucementsPageState extends State<AnnoucementsPage> {
+  @override
+  void initState() {
+    super.initState();
+    // getAnnoucements();
+  }
+
+  bool isExpanded = false;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: new AppBar(
+        centerTitle: true,
+        title: Text("Annoucements"),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: FutureBuilder(
+              future: getAnnoucements(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) return Text("Error : ${snapshot.error}");
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  default:
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Color _cd = Colors.white;
+                          if (snapshot.data[index]["priority"] ==
+                              "Very Important") {
+                            _cd = Colors.red[500];
+                          } else {
+                            _cd = Colors.amberAccent;
+                          }
+                          return Container(
+                              child: Card(
+                            child: GroovinExpansionTile(
+                              leading: Chip(
+                                backgroundColor: _cd,
+                                label: Text(snapshot.data[index]["priority"]),
+                              ),
+                              title: Text(snapshot.data[index]["timestamp"]),
+                              backgroundColor: _cd,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(snapshot.data[index]["data"]),
+                                )
+                              ],
+                            ),
+                          ));
+                        });
+                }
+              }),
         ),
       ),
     );
