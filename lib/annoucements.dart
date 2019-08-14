@@ -71,25 +71,18 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Chip(
-                                        backgroundColor: _chipColor,
-                                        label: Text(
-                                          snapshot.data[index].priority,
-                                          style: TextStyle(color: _textColor),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(snapshot.data[index].date),
-                                    ],
-                                  )
+                                  Chip(
+                                    backgroundColor: _chipColor,
+                                    label: Text(
+                                      snapshot.data[index].priority,
+                                      style: TextStyle(color: _textColor),
+                                    ),
+                                  ),
+                                  Text(snapshot.data[index].date)
                                 ],
                               ),
                               subtitle: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.only(bottom: 8,top: 8),
                                 child: Text(snapshot.data[index].title),
                               ),
                               children: <Widget>[
