@@ -34,4 +34,5 @@ flutter:
   assets:
     - assets/icon/
     - assets/images/kerala.PNG
+    - assets/images/keralarescue.jpg
   uses-material-design: true
