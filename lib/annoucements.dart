@@ -17,7 +17,7 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
     return Scaffold(
       appBar: new AppBar(
         centerTitle: true,
-        title: Text("Annoucements"),
+        title: Text("Annoucements/അറിയിപ്പുകൾ"),
       ),
       body: SingleChildScrollView(
         child: Container(
