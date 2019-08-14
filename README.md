@@ -1,6 +1,9 @@
 # keralarescue
 
-A new Flutter project.
+<p align="center">The Kerala Rescue app for co-ordinating the rehabilitation of the people affected in the Kerala Floods.</p>
+
+[![Join Kerala Rescue Slack channel](https://i.imgur.com/V7jxjak.png)](http://bit.ly/rescuechat)
+
 
 ## Getting Started
 
