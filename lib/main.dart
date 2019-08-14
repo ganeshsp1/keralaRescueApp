@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:keralarescue/services/annoucements.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -38,11 +37,6 @@ class _MyHomePageState extends State<MyHomePage> {
   WebViewController _controller;
   // DatabaseReference _childRef;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  void _incrementCounter() {
-    setState(() {
-      _controller.loadUrl('https://keralarescue.in/announcements');
-    });
-  }
 
   @override
   void initState() {
@@ -290,13 +284,9 @@ class AnnoucementsPage extends StatefulWidget {
 }
 
 class _AnnoucementsPageState extends State<AnnoucementsPage> {
-  @override
-  void initState() {
-    super.initState();
-    // getAnnoucements();
-  }
-
   bool isExpanded = false;
+  Color _chipColor;
+  Color _textColor;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -308,7 +298,7 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
         child: Container(
           child: FutureBuilder(
               future: getAnnoucements(),
-              builder: (context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasError) return Text("Error : ${snapshot.error}");
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
@@ -324,29 +314,51 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
                         shrinkWrap: true,
                         physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                        padding: EdgeInsets.only(left: 6, right: 6, top: 10),
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) {
-                          Color _cd = Colors.white;
-                          if (snapshot.data[index]["priority"] ==
+                          if (snapshot.data[index].priority ==
                               "Very Important") {
-                            _cd = Colors.red[500];
+                            _chipColor = Colors.red[500];
+                            _textColor = Colors.white;
                           } else {
-                            _cd = Colors.amberAccent;
+                            _chipColor = Colors.amberAccent;
+                            _textColor = Colors.black;
                           }
                           return Container(
                               child: Card(
+                            margin: EdgeInsets.all(10),
                             child: GroovinExpansionTile(
-                              leading: Chip(
-                                backgroundColor: _cd,
-                                label: Text(snapshot.data[index]["priority"]),
+                              backgroundColor: _chipColor,
+                              title: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Chip(
+                                        backgroundColor: _chipColor,
+                                        label: Text(
+                                          snapshot.data[index].priority,
+                                          style: TextStyle(color: _textColor),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(snapshot.data[index].date),
+                                    ],
+                                  )
+                                ],
                               ),
-                              title: Text(snapshot.data[index]["timestamp"]),
-                              backgroundColor: _cd,
+                              subtitle: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(snapshot.data[index].title),
+                              ),
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Text(snapshot.data[index]["data"]),
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Text(snapshot.data[index].data),
                                 )
                               ],
                             ),
