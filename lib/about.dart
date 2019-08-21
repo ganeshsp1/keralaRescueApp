@@ -71,6 +71,10 @@ void showGalleryAboutDialog(BuildContext context) {
                 style: aboutTextStyle,
                 text: '.',
               ),
+               TextSpan(
+                style: aboutTextStyle,
+                text: '.\n\nContributors: \n Ganesh S P, Mithun Menon ',
+              ),
             ],
           ),
         ),
