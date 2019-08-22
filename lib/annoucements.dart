@@ -12,6 +12,8 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
   bool isExpanded = false;
   Color _chipColor;
   Color _textColor;
+  String _chipText;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,18 +64,18 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
                          Priortize Chip Color According To There Announcement Priority
                          Red For Very Important & Amber For Medium And High
                          */
-                          if (snapshot.data[index].priority ==
-                              "Very Important") {
+                          if (snapshot.data[index].priority == "H") {
                             _chipColor = Colors.red[500];
                             _textColor = Colors.white;
-                          } else if (snapshot.data[index].priority.contains(
-                              new RegExp(r'high', caseSensitive: false))) {
+                            _chipText = "High Priority";
+                          } else if (snapshot.data[index].priority == "M") {
                             _chipColor = Colors.orange;
                             _textColor = Colors.white;
-                          } else if (snapshot.data[index].priority.contains(
-                              new RegExp(r'medium', caseSensitive: false))) {
+                            _chipText = "Medium Priority";
+                          } else if (snapshot.data[index].priority == "L") {
                             _chipColor = Colors.amberAccent;
                             _textColor = Colors.black;
+                            _chipText = "Low Priority";
                           }
                           return Container(
                               child: Card(
@@ -91,7 +93,7 @@ class _AnnoucementsPageState extends State<AnnoucementsPage> {
                                   Chip(
                                     backgroundColor: _chipColor,
                                     label: Text(
-                                      snapshot.data[index].priority,
+                                      _chipText,
                                       style: TextStyle(color: _textColor),
                                     ),
                                   ),

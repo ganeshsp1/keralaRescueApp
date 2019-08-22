@@ -1,6 +1,4 @@
-import 'dart:convert' as JSON;
-import 'package:http/http.dart';
-
+import 'package:firebase_database/firebase_database.dart';
 
 /*
 GET request to api and fetch the information
@@ -8,23 +6,22 @@ json is parsed to dart object
 API caches the request upto 30 mins
 API is hosted on herokuapp.com
 */
+
 Future<List<Post>> getAnnoucements() async {
-  var client = Client();
-  var apiUrl = "https://kerala-rescue-api.herokuapp.com/annoucements?page=1";
-  var response = await client.get(apiUrl);
-  var jsonData = JSON.jsonDecode(response.body);
+  var dBRef;
+  dBRef = FirebaseDatabase.instance.reference().child("announcements");
+  DataSnapshot dbData = await dBRef.once();
   List<Post> posts = [];
-  if (response.statusCode == 200) {
-    for (var p in jsonData) {
-      Post _post = Post(
-          data: p['data'],
-          title: p['title'],
-          date: p['timestamp'],
-          priority: p['priority']);
-      posts.add(_post);
-    }
-  } else
-    throw Exception('failed to load data');
+  RegExp regex = RegExp(r"^([^.]+)");
+  for (var p in dbData.value) {
+    var title = regex.allMatches(p['description']).elementAt(0).group(1);
+    Post _post = Post(
+        data: p['description'],
+        title: title,
+        date: p['dateadded'],
+        priority: p['priority']);
+    posts.add(_post);
+  }
   return posts;
 }
 
